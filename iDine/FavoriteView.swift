@@ -12,21 +12,33 @@ struct FavoriteView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(favoriteItems.items) {item in
-                    NavigationLink(value: item) {
-                        ItemRow(item: item)
+            Group {
+                if favoriteItems.items.isEmpty {
+                    ContentUnavailableView(
+                        "No favorites",
+                        systemImage: "star.slash",
+                        description: Text("You can add favorites from the menu")
+                    )
+                } else {
+                    List {
+                        ForEach(favoriteItems.items) {item in
+                            NavigationLink(value: item) {
+                                ItemRow(item: item)
+                            }
+                        }
+                        .onDelete(perform: deleteItems)
                     }
                 }
-                .onDelete(perform: deleteItems)
             }
             .navigationDestination(for: MenuItem.self) { item in
                 ItemDetail(item: item)
             }
         }
-        .navigationTitle("Favorites")
+        .navigationTitle("Favorites") 
         .toolbar {
-            EditButton()
+            if !favoriteItems.items.isEmpty {
+                EditButton()
+            }
         }
     }
     

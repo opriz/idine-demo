@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var order: Order
+    
     var body: some View {
         TabView {
             ContentView()
@@ -19,6 +21,7 @@ struct MainView: View {
                 .tabItem {
                     Label("Order", systemImage: "square.and.pencil")
                 }
+                .badge(order.items.isEmpty ? 0: order.items.count)
             
             FavoriteView()
                 .tabItem {

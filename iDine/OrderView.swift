@@ -14,10 +14,12 @@ struct OrderView: View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(order.items) {item in
+                    ForEach(order.uniqueItems) { item in
                         HStack {
                             Text(item.name)
                             Spacer()
+                            Text("×\(order.itemCounts[item] ?? 0)")
+                                .foregroundColor(.secondary)
                             Text("$\(item.price)")
                         }
                     }
@@ -39,7 +41,10 @@ struct OrderView: View {
     }
     
     func deleteItems(at offsets: IndexSet) {
-        order.items.remove(atOffsets: offsets)
+        let itemsToDelete = offsets.map { order.uniqueItems[$0] }
+        for item in itemsToDelete {
+            order.items.removeAll { $0 == item }
+        }
     }
 }
 

@@ -33,6 +33,17 @@ struct ItemDetail: View {
                     order.add(item: item)
                 }
                 .buttonStyle(.borderedProminent)
+                .overlay(alignment: .topTrailing) {
+                    if order.countFor(item: item) > 0 {
+                        Text("\(order.countFor(item: item))")
+                            .font(.caption2.bold())
+                            .foregroundColor(.white)
+                            .padding(5)
+                            .background(Color.red)
+                            .clipShape(Circle())
+                            .offset(x: 10, y: -10)
+                    }
+                }
                 
                 Button(favorites.items.contains(item) ? "Unfavorite" : "Favorite") {
                     if favorites.items.contains(item) {
